@@ -183,6 +183,7 @@
     </style>
     <link rel="shortcut icon" href="https://estoniia-ai.github.io/landing/" />
     <script src="https://cdn.jsdelivr.net/npm/@pwabuilder/pwainstall"></script>
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="bgimg">
@@ -207,6 +208,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var player;
+        var deferredPrompt; // Declare deferredPrompt variable
 
         function loadVideo() {
             player = new YT.Player('myVideo', {
@@ -233,17 +235,12 @@
             event.target.playVideo();
         }
 
-        let deferredPrompt;
-
         window.addEventListener('beforeinstallprompt', (event) => {
             // Prevent the default installation prompt
             event.preventDefault();
 
             // Store the event for later use
             deferredPrompt = event;
-
-            // Automatically trigger the installation prompt
-            installApp();
         });
 
         function installApp() {
@@ -296,29 +293,17 @@
                 document.getElementById('joinButton').addEventListener('click', function() {
                     // Check if the device is a mobile device
                     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        // For mobile devices, download the shortcut
-                        var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
-                        var blob = new Blob([content], { type: 'text/plain' });
-
-                        var link = document.createElement('a');
-                        link.href = URL.createObjectURL(blob);
-                        link.download = 'shortcut.url';
-                        link.click();
-
-                        // Display a message to find the app on the home screen
-                        alert("Find me on your Home Screen.");
+                        // For mobile devices, install the app
+                        installApp();
                     } else {
                         // For desktop/laptop devices, download the shortcut
-                        var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
-                        var blob = new Blob([content], { type: 'text/plain' });
-
+                        var content = '[InternetShortcut]\nURL=data:text/html;charset=utf-8;base64,' + btoa('https://estoniia-ai.github.io/landing/'); // URL of your landing page
                         var link = document.createElement('a');
-                        link.href = URL.createObjectURL(blob);
+                        link.href = content;
                         link.download = 'shortcut.url';
                         link.click();
                     }
                 });
-
             }
         }
     </script>
