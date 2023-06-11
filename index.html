@@ -162,6 +162,7 @@
             }
         }
     </style>
+    <link rel="shortcut icon" href="https://estoniia-ai.github.io/landing/" />
 </head>
 <body>
     <div class="bgimg">
@@ -221,6 +222,16 @@
                 document.getElementById('learnButton').addEventListener('click', function() {
                     // Redirect to the specified URL
                     window.location.href = 'https://investinestonia.com/forest/#estonia';
+                });
+                // Add event listener to the 'JOIN' button
+                document.getElementById('joinButton').addEventListener('click', function() {
+                    var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
+                    var blob = new Blob([content], { type: 'text/plain' });
+
+                    var link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'shortcut.url';
+                    link.click();
                 });
             }
         }
