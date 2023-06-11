@@ -6,13 +6,14 @@
         body, html {
             height: 100%;
             margin: 0;
-            font: 400 26px/1.4 "Arial", sans-serif;
-            color: #777;
+            font: 400 60px/1.4 "Arial", sans-serif;
+            color: #fff;
             background: #000;
         }
 
         .bgimg {
             position: relative;
+            background-image: url('https://investinestonia.com/forest/wp-content/themes/investestonia/wallpapers/digital-6.jpg');
             background-position: center;
             background-size: cover;
             min-height: 100%;
@@ -31,60 +32,56 @@
             height: 100vh; /* adjust the height as needed */
         }
 
-        .media-control {
-            /* ... existing styles ... */
-            border-radius: 50%; /* make the button round */
-            width: 200px; /* adjust the size as needed */
-            height: 200px; /* adjust the size as needed */
+        .button {
+            width: 30vw; /* adjust the size as needed */
+            height: 30vw; /* adjust the size as needed */
             position: relative;
             overflow: hidden;
             z-index: 1;
-            background-color: #008CBA; /* Blue */
-            animation: pulse 2s infinite; /* add pulsing animation */
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap; /* allow text to wrap within the button */
             padding: 10px; /* adjust the padding as needed */
+            transition: box-shadow 0.5s ease; /* add smooth transition effect */
+            transform: perspective(500px) rotateX(15deg);
         }
 
-        .media-control::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #008CBA;
-            opacity: 0.5;
-            z-index: -1;
+        .button:hover {
+            box-shadow: 0 0 30px #008CBA; /* Blue glow on hover */
         }
 
-        .media-control:hover::before {
-            opacity: 0.7;
-        }
-
-        .media-control span {
+        .button span {
             position: relative;
             z-index: 2;
-            color: white;
+            color: inherit;
             font-weight: bold;
             text-align: center;
             max-width: 100%; /* prevent the text from overflowing */
+            animation: floaty-text 3s ease-in-out infinite; /* Add floaty animation */
         }
 
-        /* ... existing styles ... */
-
-        @keyframes pulse {
+        @keyframes floaty-text {
             0% {
-                transform: scale(1);
+                transform: translate(0, 0);
             }
             50% {
-                transform: scale(1.2);
+                transform: translate(0, -10px);
             }
             100% {
-                transform: scale(1);
+                transform: translate(0, 0);
             }
+        }
+
+        .button::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: inherit;
+            transform: rotateX(-15deg) translateY(50%);
+            transform-origin: bottom center;
+            z-index: -1;
         }
 
         #endOverlay {
@@ -96,7 +93,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,1.0);
+            background-image: url('https://investinestonia.com/forest/wp-content/themes/investestonia/wallpapers/digital-6.jpg');
+            background-position: center;
+            background-size: cover;
             z-index: 2;
         }
 
@@ -105,74 +104,90 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
         }
 
-        .endButton {
-            background-color: #008CBA; /* Blue */
-            border: none;
-            color: white;
-            padding: 15px 32px;
+        .button.endButton {
+            background-color: transparent; /* Set background color to transparent */
+            border: none; /* Remove border */
+            color: inherit;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
+            font-size: 4vw;
             margin: 4px 2px;
             cursor: pointer;
-            transition: background-color 0.3s ease; /* add smooth transition effect */
+            position: relative;
+            z-index: 2;
+            outline: none; /* Remove outline */
         }
 
-        .endButton:hover {
-            background-color: #0077A2; /* Darker blue */
+        .button.endButton:hover {
+            /* No styling applied */
+        }
+
+        @media (max-width: 768px) {
+            .button {
+                width: 60vw;
+                height: 60vw;
+            }
+            .button span {
+                font-size: 6vw;
+            }
+            
+            #endButtons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="bgimg">
-    <div class="content">
-        <div class="media-control" onclick="loadVideo()">
-            <span>Meet<br>ESTONIIA</span>
+    <div class="bgimg">
+        <div class="content">
+            <div class="button" onclick="loadVideo()">
+                <span>Meet<br>ESTONIIA</span>
+            </div>
+        </div>
+        <div id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;">
+            <!-- YouTube video will be loaded here -->
+        </div>
+        
+        <div id="endOverlay">
+            <div id="endButtons">
+                <button class="button endButton" id="joinButton"><span>JOIN</span></button>
+                <button class="button endButton" id="learnButton"><span>LEARN</span></button>
+            </div>
         </div>
     </div>
-
-    <div id="myVideo" style="display:none; position: absolute; width: 100%; height: 100%;">
-        <!-- YouTube video will be loaded here -->
-    </div>
-
-    <div id="endOverlay">
-        <div id="endButtons">
-            <button class="endButton" id="joinButton">JOIN</button>
-            <button class="endButton" id="learnButton">LEARN</button>
-        </div>
-    </div>
-</div>
-
-<script src="https://www.youtube.com/iframe_api"></script>
-
-<script>
-    var player;
-    function loadVideo() {
-        player = new YT.Player('myVideo', {
-            height: '100%',
-            width: '100%',
-            videoId: 'DHyqCdnFxYI',
-            events: {
-                'onStateChange': onPlayerStateChange
-            }
-        });
-        document.getElementsByClassName('content')[0].style.display = "none";
-        document.getElementById('myVideo').style.display = "block";
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.ENDED) {
-            document.getElementById('endOverlay').style.display = "block";
-            document.getElementById('learnButton').addEventListener('click', function() {
-                window.location.href = 'https://investinestonia.com/forest/#estonia';
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var player;
+        function loadVideo() {
+            player = new YT.Player('myVideo', {
+                height: '100%',
+                width: '100%',
+                videoId: 'DHyqCdnFxYI',
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
             });
+            document.getElementsByClassName('content')[0].style.display = "none";
+            document.getElementById('myVideo').style.display = "block";
+            // Add glow to media-control button after click
+            document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA'; // Blue glow
         }
-    }
-</script>
-
+    
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                document.getElementById('endOverlay').style.display = "block";
+                document.getElementById('learnButton').addEventListener('click', function() {
+                    window.location.href = 'https://investinestonia.com/forest/#estonia';
+                });
+            }
+        }
+    </script>
 </body>
 </html>
