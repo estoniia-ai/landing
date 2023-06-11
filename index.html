@@ -186,7 +186,8 @@
         }
     </style>
     <link rel="shortcut icon" href="https://estoniia-ai.github.io/landing/" />
-    <link rel="manifest" href="manifest.json">
+    <!-- Ensure the correct path to the manifest.json file -->
+    <link rel="manifest" href="/manifest.json">
 </head>
 <body>
     <div class="bgimg">
@@ -211,7 +212,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var player;
-        var deferredPrompt; // Declare deferredPrompt variable
+        var deferredPrompt;
 
         function loadVideo() {
             player = new YT.Player('myVideo', {
@@ -224,77 +225,58 @@
                 }
             });
 
-            // Hide the content and display the video
             document.getElementsByClassName('content')[0].style.display = "none";
             document.getElementById('myVideo').style.display = "block";
-
-            // Apply blue glow effect to the clicked button
             document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
         }
 
-        // Function to handle the 'onReady' event of the video player
         function onPlayerReady(event) {
-            // Start playing the video
             event.target.playVideo();
         }
 
         window.addEventListener('beforeinstallprompt', (event) => {
-            // Prevent the default installation prompt
             event.preventDefault();
-
-            // Store the event for later use
             deferredPrompt = event;
-
-            // Show the installation prompt
             showInstallPrompt();
         });
 
         function showInstallPrompt() {
-            // Display the custom installation prompt
             var installPrompt = document.createElement('div');
-            installPrompt.innerHTML = '<div id="installOverlay"><div id="installButtons"><div class="button installButton" onclick="installApp()"><span>Add to Home Screen</span></div></div></div>';
+            installPrompt.innerHTML = '<div id="installOverlay"><div id="installButtons"><div class="button installButton" onclick="promptInstall()"><span>Add to Home Screen</span></div></div></div>';
             document.body.appendChild(installPrompt);
         }
 
-        function installApp() {
+        function promptInstall() {
             if (deferredPrompt) {
-                // Show the installation prompt
                 deferredPrompt.prompt();
-
-                // Wait for the user to respond to the prompt
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') {
                         console.log('User accepted the installation prompt.');
                     } else {
                         console.log('User dismissed the installation prompt.');
                     }
-
-                    // Clear the deferred prompt variable
                     deferredPrompt = null;
                 });
             }
         }
 
-        // Add event listener to the 'JOIN' button
         document.getElementById('joinButton').addEventListener('click', function() {
-            // Check if the device is a mobile device
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                installApp();
+                promptInstall();
             } else {
-                // For desktop/laptop devices, add bookmark to the browser
-                if (window.sidebar && window.sidebar.addPanel) { // Firefox
+                if (window.sidebar && window.sidebar.addPanel) {
                     window.sidebar.addPanel(document.title, window.location.href, '');
-                } else if (window.external && ('AddFavorite' in window.external)) { // Internet Explorer
+                } else if (window.external && ('AddFavorite' in window.external)) {
                     window.external.AddFavorite(window.location.href, document.title);
-                } else if (window.opera && window.print) { // Opera
+                } else if (window.opera && window.print) {
                     var elem = document.createElement('a');
                     elem.setAttribute('href', window.location.href);
                     elem.setAttribute('title', document.title);
                     elem.setAttribute('rel', 'sidebar');
                     elem.click();
-                } else if (window.chrome) { // Chrome
+                } else if (window.chrome) {
                     alert('Please press Ctrl+D (Cmd+D for Mac) to bookmark this page.');
-                } else { // Other browsers
+                } else {
                     alert('Please use the browser\'s bookmarking function to bookmark this page.');
                 }
             }
@@ -302,24 +284,18 @@
 
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.ENDED) {
-                // Show the end overlay when the video ends
                 document.getElementById('endOverlay').style.display = "block";
 
-                // Add event listener to the 'LEARN' button
                 document.getElementById('learnButton').addEventListener('click', function() {
-                    // Redirect to the specified URL
                     window.location.href = 'https://investinestonia.com/forest/#estonia';
                 });
-                // Add event listener to the 'JOIN' button
+
                 document.getElementById('joinButton').addEventListener('click', function() {
-                    // Check if the device is a mobile device
                     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        // For mobile devices, install the app
-                        installApp();
+                        promptInstall();
                     } else {
-                        // For desktop/laptop devices, trigger the installation prompt
                         if ('serviceWorker' in navigator) {
-                            navigator.serviceWorker.register('service-worker.js')
+                            navigator.serviceWorker.register('/service-worker.js')
                                 .then(() => {
                                     console.log('Service Worker registered');
                                 })
