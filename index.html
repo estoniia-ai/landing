@@ -228,24 +228,16 @@
                 document.getElementById('joinButton').addEventListener('click', function() {
                     // Check if the device is a mobile device
                     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        const manifest = {
-                            "name": "Your Personal Muse",
-                            "short_name": "Muse",
-                            "icons": [
-                                {
-                                    "src": "qr.png",
-                                    "sizes": "512x512",
-                                    "type": "image/png"
-                                }
-                            ],
-                            "start_url": ".",
-                            "display": "standalone",
-                            "theme_color": "#000000",
-                            "background_color": "#000000"
-                        };
-
-                        const pwaInstall = new PWAInstall();
-                        pwaInstall.prompt(manifest);
+                        if (window.matchMedia('(display-mode: standalone)').matches) {
+                            // User is already using the app in standalone mode
+                            alert("You are already using the app.");
+                        } else if (window.navigator.standalone === true) {
+                            // User is viewing the app from the home screen
+                            alert("To install the app, please open it from the home screen.");
+                        } else {
+                            // Prompt the user to add the app to the home screen
+                            alert("To install the app, please tap the share button and select 'Add to Home Screen'.");
+                        }
                     } else {
                         // For desktop/laptop devices, download the shortcut
                         var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
