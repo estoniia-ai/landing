@@ -3,6 +3,7 @@
 <head>
     <title>Your Personal Muse</title>
     <style>
+        /* CSS styles for the page layout and appearance */
         body, html {
             height: 100%;
             margin: 0;
@@ -13,7 +14,7 @@
 
         .bgimg {
             position: relative;
-            background-image: url('https://investinestonia.com/forest/wp-content/themes/investestonia/wallpapers/digital-6.jpg');
+            background-image: url('mets.png');
             background-position: center;
             background-size: cover;
             min-height: 100%;
@@ -29,26 +30,26 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh; /* adjust the height as needed */
+            height: 100vh;
         }
 
         .button {
-            width: 30vw; /* adjust the size as needed */
-            height: 30vw; /* adjust the size as needed */
+            width: 30vw;
+            height: 30vw;
             position: relative;
             overflow: hidden;
             z-index: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap; /* allow text to wrap within the button */
-            padding: 10px; /* adjust the padding as needed */
-            transition: box-shadow 0.5s ease; /* add smooth transition effect */
-            transform: perspective(500px) rotateX(15deg);
+            flex-wrap: wrap;
+            padding: 10px;
+            transition: box-shadow 0.5s ease;
+            animation: float 2s ease-in-out infinite;
         }
 
         .button:hover {
-            box-shadow: 0 0 30px #008CBA; /* Blue glow on hover */
+            box-shadow: 0 0 30px #008CBA;
         }
 
         .button img {
@@ -57,15 +58,48 @@
             display: block;
         }
 
-        .button::before {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: inherit;
-            transform: rotateX(-15deg) translateY(50%);
-            transform-origin: bottom center;
-            z-index: -1;
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes floatLeft {
+            0% {
+                transform: translateX(0px);
+            }
+            50% {
+                transform: translateX(15px);
+            }
+            100% {
+                transform: translateX(0px);
+            }
+        }
+
+        @keyframes floatRight {
+            0% {
+                transform: translateX(0px);
+            }
+            50% {
+                transform: translateX(-15px);
+            }
+            100% {
+                transform: translateX(0px);
+            }
+        }
+
+        #joinButton {
+            animation: floatLeft 2s ease-in-out infinite;
+        }
+
+        #learnButton {
+            animation: floatRight 2s ease-in-out infinite;
         }
 
         #endOverlay {
@@ -77,7 +111,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('https://investinestonia.com/forest/wp-content/themes/investestonia/wallpapers/digital-6.jpg');
+            background-image: url('mets.png');
             background-position: center;
             background-size: cover;
             z-index: 2;
@@ -96,32 +130,33 @@
         }
 
         .button.endButton {
-            background-color: transparent; /* Set background color to transparent */
-            border: none; /* Remove border */
-            color: inherit;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
             text-align: center;
             text-decoration: none;
-            font-size: 4vw;
+            font-size: 2vw;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
             margin: 4px 2px;
             cursor: pointer;
             position: relative;
             z-index: 2;
-            outline: none; /* Remove outline */
-        }
-
-        .button.endButton:hover {
-            /* No styling applied */
+            outline: none;
+            border: 2px solid #fff;
+            width: 30vw;
+            height: 30vw;
         }
 
         @media (max-width: 768px) {
+            /* CSS styles for smaller screens */
             .button {
                 width: 60vw;
                 height: 60vw;
             }
+
             .button span {
                 font-size: 6vw;
             }
-            
+
             #endButtons {
                 flex-direction: column;
             }
@@ -133,42 +168,58 @@
         <div class="content">
             <div class="button" onclick="loadVideo()">
                 <img src="qr.png" alt="Meet Estoniia">
-                <!-- <span>Meet<br>ESTONIIA</span> -->
             </div>
         </div>
+
         <div id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;">
             <!-- YouTube video will be loaded here -->
         </div>
-        
+
         <div id="endOverlay">
             <div id="endButtons">
-                <button class="button endButton" id="joinButton"><span>JOIN</span></button>
-                <button class="button endButton" id="learnButton"><span>LEARN</span></button>
+                <div class="button endButton" id="joinButton"><span>JOIN</span></div>
+                <div class="button endButton" id="learnButton"><span>LEARN</span></div>
             </div>
         </div>
     </div>
+
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var player;
+
         function loadVideo() {
             player = new YT.Player('myVideo', {
                 height: '100%',
                 width: '100%',
                 videoId: 'DHyqCdnFxYI',
                 events: {
+                    'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange
                 }
             });
+
+            // Hide the content and display the video
             document.getElementsByClassName('content')[0].style.display = "none";
             document.getElementById('myVideo').style.display = "block";
-            // Add glow to media-control button after click
-            document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA'; // Blue glow
+
+            // Apply blue glow effect to the clicked button
+            document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
         }
-    
+
+        // Function to handle the 'onReady' event of the video player
+        function onPlayerReady(event) {
+            // Start playing the video
+            event.target.playVideo();
+        }
+
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.ENDED) {
+                // Show the end overlay when the video ends
                 document.getElementById('endOverlay').style.display = "block";
+
+                // Add event listener to the 'LEARN' button
                 document.getElementById('learnButton').addEventListener('click', function() {
+                    // Redirect to the specified URL
                     window.location.href = 'https://investinestonia.com/forest/#estonia';
                 });
             }
