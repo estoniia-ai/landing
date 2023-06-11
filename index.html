@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Landing Page</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font: 400 26px/1.4 "Lato", sans-serif;
+            color: #777;
+            background: #000;
+        }
+
+        .bgimg {
+            position: relative;
+            background-position: center;
+            background-size: cover;
+            min-height: 100%;
+        }
+
+        .content {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* adjust the height as needed */
+        }
+
+        .media-control {
+            /* ... existing styles ... */
+            border-radius: 50%; /* make the button round */
+            width: 200px; /* adjust the size as needed */
+            height: 200px; /* adjust the size as needed */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            background-color: #008CBA; /* Blue */
+            animation: pulse 2s infinite; /* add pulsing animation */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap; /* allow text to wrap within the button */
+            padding: 10px; /* adjust the padding as needed */
+        }
+
+        .media-control::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #008CBA;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .media-control:hover::before {
+            opacity: 0.7;
+        }
+
+        .media-control span {
+            position: relative;
+            z-index: 2;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            max-width: 100%; /* prevent the text from overflowing */
+        }
+
+        /* ... existing styles ... */
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #endOverlay {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,1.0);
+            z-index: 2;
+        }
+
+        #endButtons {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .endButton {
+            background-color: #008CBA; /* Blue */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* add smooth transition effect */
+        }
+
+        .endButton:hover {
+            background-color: #0077A2; /* Darker blue */
+        }
+    </style>
+</head>
+<body>
+
+<div class="bgimg">
+    <div class="content">
+        <div class="media-control" onclick="loadVideo()">
+            <span>Meet<br>ESTONIIA</span>
+        </div>
+    </div>
+
+    <div id="myVideo" style="display:none; position: absolute; width: 100%; height: 100%;">
+        <!-- YouTube video will be loaded here -->
+    </div>
+
+    <div id="endOverlay">
+        <div id="endButtons">
+            <button class="endButton" id="joinButton">JOIN</button>
+            <button class="endButton" id="learnButton">LEARN</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<script>
+    var player;
+    function loadVideo() {
+        player = new YT.Player('myVideo', {
+            height: '100%',
+            width: '100%',
+            videoId: 'DHyqCdnFxYI',
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        });
+        document.getElementsByClassName('content')[0].style.display = "none";
+        document.getElementById('myVideo').style.display = "block";
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.ENDED) {
+            document.getElementById('endOverlay').style.display = "block";
+            document.getElementById('learnButton').addEventListener('click', function() {
+                window.location.href = 'https://investinestonia.com/forest/#estonia';
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
