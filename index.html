@@ -163,6 +163,7 @@
         }
     </style>
     <link rel="shortcut icon" href="https://estoniia-ai.github.io/landing/" />
+    <script src="https://cdn.jsdelivr.net/npm/@pwabuilder/pwainstall"></script>
 </head>
 <body>
     <div class="bgimg">
@@ -225,13 +226,36 @@
                 });
                 // Add event listener to the 'JOIN' button
                 document.getElementById('joinButton').addEventListener('click', function() {
-                    var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
-                    var blob = new Blob([content], { type: 'text/plain' });
+                    // Check if the device is a mobile device
+                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                        const manifest = {
+                            "name": "Your Personal Muse",
+                            "short_name": "Muse",
+                            "icons": [
+                                {
+                                    "src": "qr.png",
+                                    "sizes": "512x512",
+                                    "type": "image/png"
+                                }
+                            ],
+                            "start_url": ".",
+                            "display": "standalone",
+                            "theme_color": "#000000",
+                            "background_color": "#000000"
+                        };
 
-                    var link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'shortcut.url';
-                    link.click();
+                        const pwaInstall = new PWAInstall();
+                        pwaInstall.prompt(manifest);
+                    } else {
+                        // For desktop/laptop devices, download the shortcut
+                        var content = '[InternetShortcut]\nURL=https://estoniia-ai.github.io/landing/'; // URL of your landing page
+                        var blob = new Blob([content], { type: 'text/plain' });
+
+                        var link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = 'shortcut.url';
+                        link.click();
+                    }
                 });
             }
         }
