@@ -1,3 +1,6 @@
+I've removed everything related to YouTube from your code, including the YouTube API script and the corresponding JavaScript functions that were using it. 
+
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,7 +138,9 @@
             text-align: center;
             text-decoration: none;
             font-size: 2vw;
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            text
+
+-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
             margin: 4px 2px;
             cursor: pointer;
             position: relative;
@@ -197,9 +202,10 @@
             </div>
         </div>
 
-        <div id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;">
-            <!-- YouTube video will be loaded here -->
-        </div>
+        <video id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;" controls>
+            <source src="Estoniia.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
 
         <div id="endOverlay">
             <div id="endButtons">
@@ -209,30 +215,24 @@
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         var player;
         var deferredPrompt;
 
         function loadVideo() {
-            player = new YT.Player('myVideo', {
-                height: '100%',
-                width: '100%',
-                videoId: 'DHyqCdnFxYI',
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-
+            var video = document.getElementById('myVideo');
+            video.style.display = "block";
             document.getElementsByClassName('content')[0].style.display = "none";
-            document.getElementById('myVideo').style.display = "block";
             document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
+            video.play();
         }
 
-        function onPlayerReady(event) {
-            event.target.playVideo();
-        }
+        document.getElementById('myVideo').addEventListener('ended', function() {
+            document.getElementById('endOverlay').style.display = "block";
+            document.getElementsByClassName('content')[0].style.display = "none";
+            document.getElementById('myVideo').style.display = "none";
+            document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
+        });
 
         window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault();
@@ -242,7 +242,9 @@
 
         function showInstallPrompt() {
             var installPrompt = document.createElement('div');
-            installPrompt.innerHTML = '<div id="installOverlay"><div id="installButtons"><div class="button installButton" onclick="promptInstall()"><span>Add to Home Screen</span></div></div></div>';
+            installPrompt.innerHTML = '<div id
+
+="installOverlay"><div id="installButtons"><div class="button installButton" onclick="promptInstall()"><span>Add to Home Screen</span></div></div></div>';
             document.body.appendChild(installPrompt);
         }
 
@@ -282,31 +284,9 @@
             }
         });
 
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.ENDED) {
-                document.getElementById('endOverlay').style.display = "block";
-
-                document.getElementById('learnButton').addEventListener('click', function() {
-                    window.location.href = 'https://investinestonia.com/forest/#estonia';
-                });
-
-                document.getElementById('joinButton').addEventListener('click', function() {
-                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                        promptInstall();
-                    } else {
-                        if ('serviceWorker' in navigator) {
-                            navigator.serviceWorker.register('/service-worker.js')
-                                .then(() => {
-                                    console.log('Service Worker registered');
-                                })
-                                .catch((error) => {
-                                    console.error('Service Worker registration failed:', error);
-                                });
-                        }
-                    }
-                });
-            }
-        }
+        document.getElementById('learnButton').addEventListener('click', function() {
+            window.location.href = 'https://investinestonia.com/forest/#estonia';
+        });
     </script>
 </body>
 </html>
