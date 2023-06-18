@@ -4,11 +4,11 @@ self.addEventListener('install', (event) => {
       caches.open('estoniia-app-cache').then((cache) => {
         // Cache the core assets of your app
         return cache.addAll([
-          'https://estoniia-ai.github.io/landing/',
+          'https://estoniia.ai',
           'manifest.json',
           'qr.png',
           'mets.png',
-          'https://www.youtube.com/iframe_api'
+          'Estoniia.mp4'
           // Add other core assets here
         ]);
       })

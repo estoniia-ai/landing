@@ -1,7 +1,7 @@
 {
     "name": "ESTONIIA - Your Personal Muse",
     "short_name": "ESTONIIA",
-    "start_url": "https://estoniia-ai.github.io/landing/",
+    "start_url": "https://estoniia.ai",
     "display": "standalone",
     "background_color": "#000",
     "theme_color": "#000",
