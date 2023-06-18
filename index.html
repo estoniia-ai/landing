@@ -283,26 +283,35 @@
         }
 
         document.getElementById('joinButton').addEventListener('click', function() {
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                promptInstall();
-            } else {
-                if (window.sidebar && window.sidebar.addPanel) {
-                    window.sidebar.addPanel(document.title, window.location.href, '');
-                } else if (window.external && ('AddFavorite' in window.external)) {
-                    window.external.AddFavorite(window.location.href, document.title);
-                } else if (window.opera && window.print) {
-                    var elem = document.createElement('a');
-                    elem.setAttribute('href', window.location.href);
-                    elem.setAttribute('title', document.title);
-                    elem.setAttribute('rel', 'sidebar');
-                    elem.click();
-                } else if (window.chrome) {
-                    alert('Please press Ctrl+D (Cmd+D for Mac) to bookmark this page.');
+            if (window.matchMedia('(max-width: 600px)').matches) {
+                if (/iphone|ipad|ipod/.test( navigator.userAgent.toLowerCase() )) {
+                    alert('To add this app to your home screen: tap Share button on browser options, then tap "Add to Home Screen".');
                 } else {
-                    alert('Please use the browser\'s bookmarking function to bookmark this page.');
+                    // The viewport is 600 pixels wide or less, likely a mobile device
+                    promptInstall();
                 }
+            } else {
+                addBookmark();
             }
         });
+
+        function addBookmark() {
+            if (window.sidebar && window.sidebar.addPanel) {
+                window.sidebar.addPanel(document.title, window.location.href, '');
+            } else if (window.external && ('AddFavorite' in window.external)) {
+                window.external.AddFavorite(window.location.href, document.title);
+            } else if (window.opera && window.print) {
+                var elem = document.createElement('a');
+                elem.setAttribute('href', window.location.href);
+                elem.setAttribute('title', document.title);
+                elem.setAttribute('rel', 'sidebar');
+                elem.click();
+            } else if (window.chrome) {
+                alert('Please press Ctrl+D (Cmd+D for Mac) to bookmark this page.');
+            } else {
+                alert('Please use the browser\'s bookmarking function to bookmark this page.');
+            }
+        };
 
         document.getElementById('learnButton').addEventListener('click', function() {
             window.location.href = 'https://investinestonia.com/forest/#estonia';
