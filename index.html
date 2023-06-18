@@ -226,9 +226,9 @@
             loadVideo();
 
             document.getElementById('myVideo').addEventListener('ended', function() {
+                document.getElementById('myVideo').style.display = "none";
                 document.getElementById('endOverlay').style.display = "block";
                 document.getElementsByClassName('content')[0].style.display = "none";
-                document.getElementById('myVideo').style.display = "none";
                 document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
             });
         });
