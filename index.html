@@ -197,7 +197,7 @@
             </div>
         </div>
 
-        <video id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;" controls>
+        <video id="myVideo" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%;" controls autoplay muted>
             <source src="Estoniia.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -232,6 +232,7 @@
                 document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
             });
         });
+
         window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault();
             deferredPrompt = event;
