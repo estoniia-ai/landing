@@ -145,6 +145,22 @@
             width: 30vw;
             height: 30vw;
         }
+
+        /* Add CSS for the footer */
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            color: gray;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 15px;
+            pointer-events: none; /* Allow to be clicked through */
+            z-index: 3;
+        }
+
         /* Small devices (portrait phones) */
         @media (max-width: 576px) {
             .button {
@@ -190,6 +206,7 @@
     <link rel="manifest" href="/manifest.json">
 </head>
 <body>
+
     <div class="bgimg">
         <div class="content">
             <div class="button">
@@ -208,6 +225,11 @@
                 <div class="button endButton" id="learnButton"><span>LEARN</span></div>
             </div>
         </div>
+    </div>
+
+    <!-- Add the footer div -->
+    <div class="footer">
+        Copyright &copy; 2023 Estoniia MUSE OÜ
     </div>
 
     <script>
