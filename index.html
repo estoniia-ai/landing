@@ -135,9 +135,7 @@
             text-align: center;
             text-decoration: none;
             font-size: 2vw;
-            text
-
--shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff;
             margin: 4px 2px;
             cursor: pointer;
             position: relative;
@@ -194,7 +192,7 @@
 <body>
     <div class="bgimg">
         <div class="content">
-            <div class="button" onclick="loadVideo()">
+            <div class="button">
                 <img src="qr.png" alt="Meet Estoniia">
             </div>
         </div>
@@ -224,13 +222,16 @@
             video.play();
         }
 
-        document.getElementById('myVideo').addEventListener('ended', function() {
-            document.getElementById('endOverlay').style.display = "block";
-            document.getElementsByClassName('content')[0].style.display = "none";
-            document.getElementById('myVideo').style.display = "none";
-            document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
-        });
+        document.addEventListener('DOMContentLoaded', function() {
+            loadVideo();
 
+            document.getElementById('myVideo').addEventListener('ended', function() {
+                document.getElementById('endOverlay').style.display = "block";
+                document.getElementsByClassName('content')[0].style.display = "none";
+                document.getElementById('myVideo').style.display = "none";
+                document.getElementsByClassName('button')[0].style.boxShadow = '0 0 30px #008CBA';
+            });
+        });
         window.addEventListener('beforeinstallprompt', (event) => {
             event.preventDefault();
             deferredPrompt = event;
